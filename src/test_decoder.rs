@@ -1,4 +1,4 @@
-use {CborType, CborError};
+use {CborError, CborType};
 use decoder::{MAX_ARRAY_SIZE, decode};
 use std::collections::BTreeMap;
 
