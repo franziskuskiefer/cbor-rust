@@ -1,6 +1,6 @@
 [package]
 name = "cbor"
-version = "0.1.0"
-authors = ["Franziskus Kiefer <franziskuskiefer@gmail.com>"]
+version = "0.1.1"
+authors = ["Franziskus Kiefer <franziskuskiefer@gmail.com>", "David Keeler <dkeeler@mozilla.com>"]
 
 [dependencies]
