@@ -144,7 +144,9 @@ impl<'a> DecoderCursor<'a> {
 
 /// Read the CBOR structure in bytes and return it as a `CborType`.
 pub fn decode(bytes: &[u8]) -> Result<CborType, CborError> {
-    let mut decoder_cursor = DecoderCursor { cursor: Cursor::new(bytes) };
+    let mut decoder_cursor = DecoderCursor {
+        cursor: Cursor::new(bytes),
+    };
     decoder_cursor.decode_item()
     // TODO: check cursor at end?
 }
