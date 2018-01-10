@@ -152,7 +152,9 @@ impl<'a> DecoderCursor<'a> {
     }
 }
 
-/// Read the CBOR structure in bytes and return it as a `CborType`.
+/// Read the CBOR structure in bytes and return it as a `CborType`. To prevent stack exhaustion, the
+/// maximum nested depth of CBOR objects (for example, an array of an array of an array...) is 256.
+/// If the input data describes a CBOR structure that exceeds this limit, an error will be returned.
 pub fn decode(bytes: &[u8]) -> Result<CborType, CborError> {
     let mut decoder_cursor = DecoderCursor {
         cursor: Cursor::new(bytes),
