@@ -391,3 +391,55 @@ fn test_invalid_input() {
     let bytes = vec![0x60];
     test_decoder_error(bytes, CborError::UnsupportedType);
 }
+
+#[test]
+fn test_avoid_stack_exhaustion_with_arrays() {
+    let mut bytes: Vec<u8> = Vec::new();
+    // Create a payload representing Array(Array(Array(Array(...(Array(0))))))
+    // If the implementation is not careful, this will exhaust the stack.
+    for _ in 1..10000 {
+        bytes.push(0b1000_0001);
+    }
+    bytes.push(0);
+    test_decoder_error(bytes, CborError::MalformedInput);
+}
+
+#[test]
+fn test_avoid_stack_exhaustion_with_maps_1() {
+    let mut bytes: Vec<u8> = Vec::new();
+    // Create a payload representing Map(0: Map(0: Map(0: Map(...Map()))))
+    // If the implementation is not careful, this will exhaust the stack.
+    for _ in 1..10000 {
+        bytes.push(0b1010_0001);
+        bytes.push(0);
+    }
+    bytes.push(0b1010_0000);
+    test_decoder_error(bytes, CborError::MalformedInput);
+}
+
+#[test]
+fn test_avoid_stack_exhaustion_with_maps_2() {
+    let mut bytes: Vec<u8> = Vec::new();
+    // Create a payload representing Map(Map(Map(...(Map(): 0): 0): 0): 0)
+    // If the implementation is not careful, this will exhaust the stack.
+    for _ in 1..10000 {
+        bytes.push(0b1010_0001);
+    }
+    bytes.push(0b1010_0000);
+    for _ in 1..9999 {
+        bytes.push(0);
+    }
+    test_decoder_error(bytes, CborError::MalformedInput);
+}
+
+#[test]
+fn test_avoid_stack_exhaustion_with_tags() {
+    let mut bytes: Vec<u8> = Vec::new();
+    // Create a payload representing Tag(6: Tag(6: Tag(6: Tag(...Tag(0)))))
+    // If the implementation is not careful, this will exhaust the stack.
+    for _ in 1..10000 {
+        bytes.push(0b1100_0110);
+    }
+    bytes.push(0);
+    test_decoder_error(bytes, CborError::MalformedInput);
+}
