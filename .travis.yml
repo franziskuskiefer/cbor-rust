@@ -16,8 +16,9 @@ install:
   - rustup component add --toolchain nightly rustfmt-preview
 
 script:
-- |
-  cargo +nightly fmt -- --write-mode=diff
+# Disabling rustfmt for now. It's breaking all the time.
+#- |
+#  cargo +nightly fmt -- --write-mode=diff
 - |
   cargo build &&
   cargo test
