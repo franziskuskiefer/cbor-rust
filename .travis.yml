@@ -13,7 +13,7 @@ addons:
 
 install:
   - rustup install nightly
-  - rustup component add rustfmt-preview
+#  - rustup component add rustfmt-preview
 
 script:
 # Disabling rustfmt for now. It's breaking all the time.
