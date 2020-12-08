@@ -1,6 +1,6 @@
 [package]
 name = "moz_cbor"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Franziskus Kiefer <franziskuskiefer@gmail.com>", "David Keeler <dkeeler@mozilla.com>"]
 description = "Library to use CBOR (https://tools.ietf.org/html/rfc7049) in Rust"
 repository = "https://github.com/franziskuskiefer/cbor-rust"
