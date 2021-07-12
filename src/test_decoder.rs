@@ -370,17 +370,21 @@ fn test_major_type_7() {
 
 #[test]
 fn test_large_input() {
-    let array = vec![0xFF; MAX_ARRAY_SIZE];
+    let len = MAX_ARRAY_SIZE;
+    let array = vec![0xFF; len];
     let expected = CborType::Bytes(array.clone());
-    let mut bytes = vec![0x5A, 0x08, 0x00, 0x00, 0x00];
+    let mut bytes = vec![0x5A];
+    bytes.extend_from_slice(&(len as u32).to_be_bytes());
     bytes.extend_from_slice(&array);
     test_decoder(bytes, expected);
 }
 
 #[test]
 fn test_too_large_input() {
-    let array = vec![0xFF; MAX_ARRAY_SIZE + 1];
-    let mut bytes = vec![0x5A, 0x08, 0x00, 0x00, 0x01];
+    let len = MAX_ARRAY_SIZE + 1;
+    let array = vec![0xFF; len];
+    let mut bytes = vec![0x5A];
+    bytes.extend_from_slice(&(len as u32).to_be_bytes());
     bytes.extend_from_slice(&array);
     test_decoder_error(bytes, CborError::InputTooLarge);
 }
